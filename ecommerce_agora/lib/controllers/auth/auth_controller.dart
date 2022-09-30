@@ -122,6 +122,14 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> logout() async {
+    try {
+      await firebaseAuth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> loginAnonymously() async {
     userCredential = await FirebaseAuth.instance.signInAnonymously();
     print('ANONYMOUSLY LOGED IN: ${userCredential.toString()}');

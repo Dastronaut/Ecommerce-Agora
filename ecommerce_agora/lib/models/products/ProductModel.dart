@@ -2,8 +2,11 @@ import 'package:ecommerce_agora/models/categories/CategoryModel.dart';
 import 'package:ecommerce_agora/shared/widgets/typedef.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'ProductModel.freezed.dart';
+part 'ProductModel.g.dart';
+
 @freezed
-class ProductModel {
+class ProductModel with _$ProductModel {
   factory ProductModel({
     required int id,
     required String name,
@@ -20,17 +23,7 @@ class ProductModel {
     String? rating,
     String? model,
     String? weight,
-  }) {
-    // TODO: implement
-    throw UnimplementedError();
-  }
+  }) = _ProductModel;
 
-  factory ProductModel.fromJson(JSON json) => ProductModel(
-      id: 0,
-      name: 'name',
-      image: 'image',
-      price: 'price',
-      discount: 'discount',
-      discountPrice: 'discountPrice',
-      brand: 'brand');
+  factory ProductModel.fromJson(JSON json) => _$ProductModelFromJson(json);
 }

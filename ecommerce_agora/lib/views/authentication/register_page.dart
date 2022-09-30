@@ -1,5 +1,4 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
-import 'package:ecommerce_agora/views/authentication/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -391,8 +390,11 @@ class RegisterPage extends GetWidget<AuthController> {
       onPressed: () {
         if (authController.checkRegisterValid(
             emailController.text, passController.text, repassController.text)) {
-          authController.register(emailController.text, passController.text);
-          Get.to(() => LoginPage());
+          authController
+              .register(emailController.text, passController.text)
+              .then((value) {
+            if (value) Get.offAllNamed('/login');
+          });
         }
       },
       child: Text(
@@ -515,7 +517,7 @@ class RegisterPage extends GetWidget<AuthController> {
           ),
         ),
         TextButton(
-            onPressed: () => Get.to(() => LoginPage()),
+            onPressed: () => Get.offAllNamed('/login'),
             child: Text(
               'Sign in',
               style: GoogleFonts.nunito(

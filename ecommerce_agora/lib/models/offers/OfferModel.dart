@@ -1,9 +1,11 @@
+import 'package:ecommerce_agora/shared/widgets/typedef.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../shared/widgets/typedef.dart';
+part 'OfferModel.freezed.dart';
+part 'OfferModel.g.dart';
 
 @freezed
-class OfferModel {
+class OfferModel with _$OfferModel {
   factory OfferModel({
     required int id,
     required String title,
@@ -12,17 +14,7 @@ class OfferModel {
     required String price,
     required String discount,
     required String discountPrice,
-  }) {
-    // TODO: implement
-    throw UnimplementedError();
-  }
+  }) = _OfferModel;
 
-  factory OfferModel.fromJson(JSON json) => OfferModel(
-      id: 0,
-      title: 'title',
-      description: 'description',
-      image: 'image',
-      price: 'price',
-      discount: 'discount',
-      discountPrice: 'discountPrice');
+  factory OfferModel.fromJson(JSON json) => _$OfferModelFromJson(json);
 }

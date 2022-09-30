@@ -1,17 +1,16 @@
 import 'package:ecommerce_agora/shared/widgets/typedef.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'CategoryModel.freezed.dart';
+part 'CategoryModel.g.dart';
+
 @freezed
-class CategoryModel {
+class CategoryModel with _$CategoryModel {
   factory CategoryModel({
     required int id,
     required String name,
     required String image,
-  }) {
-    // TODO: implement
-    throw UnimplementedError();
-  }
+  }) = _CategoryModel;
 
-  factory CategoryModel.fromJson(JSON json) =>
-      CategoryModel(id: 0, name: 'name', image: 'image');
+  factory CategoryModel.fromJson(JSON json) => _$CategoryModelFromJson(json);
 }

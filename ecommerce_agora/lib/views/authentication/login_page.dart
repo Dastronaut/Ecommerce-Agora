@@ -1,6 +1,4 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
-import 'package:ecommerce_agora/views/authentication/register_page.dart';
-import 'package:ecommerce_agora/views/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -60,7 +58,7 @@ class LoginPage extends GetWidget<AuthController> {
                     ),
                     onPressed: () {
                       authController.loginAnonymously();
-                      Get.to(() => HomePage());
+                      Get.offAllNamed('/home');
                     },
                   )),
 
@@ -450,9 +448,12 @@ class LoginPage extends GetWidget<AuthController> {
       onPressed: () {
         if (authController.checkLoginValid(
             emailController.text, passController.text)) {
-          if (authController.login(emailController.text, passController.text)) {
-            Get.to(() => HomePage());
-          }          
+          authController
+              .login(emailController.text, passController.text)
+              .then((value) {
+            print('VALUE: $value');
+            if (value) Get.offAllNamed('/home');
+          });
         }
       },
       child: Text(
@@ -602,7 +603,7 @@ class LoginPage extends GetWidget<AuthController> {
           ),
         ),
         TextButton(
-            onPressed: () => Get.to(() => RegisterPage()),
+            onPressed: () => Get.toNamed('/register'),
             child: Text(
               'Sign up',
               style: GoogleFonts.nunito(
