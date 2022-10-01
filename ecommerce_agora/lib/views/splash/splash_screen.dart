@@ -1,9 +1,11 @@
-import 'package:ecommerce_agora/views/authentication/login_page.dart';
+import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
+import 'package:ecommerce_agora/shared/widgets/constant/firebase_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  SplashPage({Key? key}) : super(key: key);
+  final authController = Get.put(AuthController());
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -13,8 +15,18 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () {
-      Get.off(() => LoginPage());
+    Future.delayed(const Duration(seconds: 3), () {
+      chechSignedIn();
+    });
+  }
+
+  Future<void> chechSignedIn() async {
+    authController.isLoggedIn().then((value) {
+      if (value) {
+        Get.offNamed('/home');
+      } else {
+        Get.offNamed('/login');
+      }
     });
   }
 

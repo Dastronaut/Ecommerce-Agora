@@ -2,7 +2,7 @@ import 'package:ecommerce_agora/controllers/auth/auth_binding.dart';
 import 'package:ecommerce_agora/controllers/home/home_binding.dart';
 import 'package:ecommerce_agora/views/authentication/login_page.dart';
 import 'package:ecommerce_agora/views/authentication/register_page.dart';
-import 'package:ecommerce_agora/views/authentication/splash_screen.dart';
+import 'package:ecommerce_agora/views/splash/splash_screen.dart';
 import 'package:ecommerce_agora/views/home/home_page.dart';
 import 'package:get/route_manager.dart';
 
@@ -12,7 +12,7 @@ class Routes {
   static final routes = [
     GetPage(
       name: '/splash',
-      page: () => const SplashPage(),
+      page: () => SplashPage(),
     ),
     GetPage(
       name: '/login',

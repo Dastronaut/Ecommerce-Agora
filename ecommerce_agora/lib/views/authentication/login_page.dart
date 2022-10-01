@@ -451,7 +451,6 @@ class LoginPage extends GetWidget<AuthController> {
           authController
               .login(emailController.text, passController.text)
               .then((value) {
-            print('VALUE: $value');
             if (value) Get.offAllNamed('/home');
           });
         }

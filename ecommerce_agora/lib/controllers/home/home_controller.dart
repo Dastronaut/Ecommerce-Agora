@@ -60,8 +60,7 @@ class HomeController extends GetxController {
 
   void getDiscountedProducts() {
     _productProvider.getDiscountedProducts().then((products) {
-      discountedProducts(products);
-      print(products);
+      discountedProducts.value = products;
     });
   }
 

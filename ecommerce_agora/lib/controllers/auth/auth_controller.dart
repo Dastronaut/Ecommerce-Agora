@@ -1,9 +1,17 @@
+import 'dart:io';
+
 import 'package:ecommerce_agora/shared/widgets/constant/firebase_constant.dart';
+import 'package:ecommerce_agora/shared/widgets/constant/firestore_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
+  final storage = GetStorage();
 
   late Rx<User?> firebaseUser;
   RxBool isShowPW = true.obs;
@@ -13,6 +21,17 @@ class AuthController extends GetxController {
   RxString errorRegistMsg = "".obs;
   late UserCredential userCredential;
 
+  TextEditingController? displayNameController;
+  TextEditingController? aboutMeController;
+  final TextEditingController phoneController = TextEditingController();
+
+  RxString dialCodeDigits = '+84'.obs;
+
+  RxBool isLoading = false.obs;
+  File? avatarImageFile;
+
+  final FocusNode focusNodeNickname = FocusNode();
+
   @override
   void onInit() {
     super.onInit();
@@ -20,15 +39,15 @@ class AuthController extends GetxController {
     firebaseUser = Rx<User?>(firebaseAuth.currentUser);
 
     firebaseUser.bindStream(firebaseAuth.userChanges());
-    ever(firebaseUser, _setInitialScreen);
+    print('CURRENT USER: ${firebaseUser.value}');
   }
 
-  _setInitialScreen(User? user) {
-    if (user == null) {
-      // Get.offAll(() => const SignUp());
-    } else {
-      // Get.offAll(() => const HomeScreen());
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    isRemember.value = false;
+    isShowPW.value = true;
+    isShowrePW.value = true;
   }
 
   bool checkLoginValid(String email, String password) {
@@ -90,6 +109,20 @@ class AuthController extends GetxController {
       if (userCredential.user?.uid == null) {
         return false;
       }
+      firebaseFirestore
+          .collection(FirestoreConstants.pathUserCollection)
+          .doc(userCredential.user!.uid)
+          .set({
+        FirestoreConstants.displayName: email,
+        FirestoreConstants.photoUrl: '',
+        FirestoreConstants.phoneNumber: '',
+        FirestoreConstants.id: userCredential.user?.uid,
+        FirestoreConstants.email: email,
+        FirestoreConstants.createAt: userCredential.user?.metadata.creationTime,
+        FirestoreConstants.lastSignInTime:
+            userCredential.user?.metadata.lastSignInTime,
+      });
+      print('USER CREDENTIAL: ${userCredential.toString()}');
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -110,7 +143,11 @@ class AuthController extends GetxController {
           email: email, password: password);
       if (userCredential.user?.uid == null) {
         return false;
+      } else {
+        storage.write('currentUID', userCredential.user!.uid);
+        print('AUTH LOGED IN: ${userCredential.toString()}');
       }
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -122,9 +159,17 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<bool> isLoggedIn() async {
+    if (storage.read('currentUID') != '') {
+      return true;
+    }
+    return false;
+  }
+
   Future<void> logout() async {
     try {
       await firebaseAuth.signOut();
+      storage.write('currentUID', '');
     } catch (e) {
       print(e);
     }
@@ -133,5 +178,23 @@ class AuthController extends GetxController {
   Future<void> loginAnonymously() async {
     userCredential = await FirebaseAuth.instance.signInAnonymously();
     print('ANONYMOUSLY LOGED IN: ${userCredential.toString()}');
+  }
+
+  Future<void> getImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? pickedFile = await imagePicker
+        .pickImage(source: ImageSource.gallery)
+        .catchError((onError) {
+      Fluttertoast.showToast(msg: onError.toString());
+    });
+    File? image;
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+    }
+    if (image != null) {
+      avatarImageFile = image;
+      isLoading.value = true;
+      // uploadFile();
+    }
   }
 }

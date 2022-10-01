@@ -172,17 +172,17 @@ class ExploreTab extends GetView<HomeController> {
   }
 
   Widget _buildCategories(ThemeData theme) {
-    return SizedBox(
-      height: 60,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.categories.length,
-        itemBuilder: (context, index) {
-          return _buildCategory(controller.categories[index], index, theme);
-        },
-      ),
-    );
+    return Obx(() => SizedBox(
+          height: 60,
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.categories.length,
+            itemBuilder: (context, index) {
+              return _buildCategory(controller.categories[index], index, theme);
+            },
+          ),
+        ));
   }
 
   Widget _buildCategory(CategoryModel category, index, theme) {
@@ -244,8 +244,8 @@ class ExploreTab extends GetView<HomeController> {
             aspectRatio: 1,
             child: GestureDetector(
               onTap: () {
-                Get.toNamed(
-                    '/product/${controller.discountedProducts[index].id}');
+                // Get.toNamed(
+                //     '/product/${controller.discountedProducts[index].id}');
               },
               child: Container(
                   clipBehavior: Clip.hardEdge,
