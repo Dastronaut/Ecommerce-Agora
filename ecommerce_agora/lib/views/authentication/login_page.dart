@@ -1,4 +1,6 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
+import 'package:ecommerce_agora/shared/widgets/common_widget.dart';
+import 'package:ecommerce_agora/views/authentication/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -7,8 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 class LoginPage extends GetWidget<AuthController> {
   LoginPage({Key? key}) : super(key: key);
   final authController = Get.put(AuthController());
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +122,18 @@ class LoginPage extends GetWidget<AuthController> {
                           child: Column(
                             children: [
                               _buildForgotPW(size),
-                              signInButton(size),
+                              appButton(size, 'Sign in', () {
+                                if (authController.checkLoginValid(
+                                    controller.emailController.text,
+                                    controller.passController.text)) {
+                                  authController
+                                      .login(controller.emailController.text,
+                                          controller.passController.text)
+                                      .then((value) {
+                                    if (value) Get.offAllNamed('/home');
+                                  });
+                                }
+                              }),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -227,7 +238,7 @@ class LoginPage extends GetWidget<AuthController> {
             //email address textField
             Expanded(
               child: TextField(
-                controller: emailController,
+                controller: controller.emailController,
                 maxLines: 1,
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,
@@ -287,7 +298,7 @@ class LoginPage extends GetWidget<AuthController> {
             //password textField
             Obx(() => Expanded(
                   child: TextField(
-                    controller: passController,
+                    controller: controller.passController,
                     maxLines: 1,
                     cursorColor: Colors.white70,
                     keyboardType: TextInputType.visiblePassword,
@@ -405,7 +416,7 @@ class LoginPage extends GetWidget<AuthController> {
         ),
         TextButton(
             onPressed: () {
-              print('Click here!');
+              Get.to(() => ForgotPasswordPage());
             },
             child: Text(
               'Click here!',
@@ -435,35 +446,6 @@ class LoginPage extends GetWidget<AuthController> {
             ),
           ),
         ));
-  }
-
-  Widget signInButton(Size size) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(size.width, size.height / 13),
-        alignment: Alignment.center,
-        primary: const Color(0xFFF56B3F),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-      onPressed: () {
-        if (authController.checkLoginValid(
-            emailController.text, passController.text)) {
-          authController
-              .login(emailController.text, passController.text)
-              .then((value) {
-            if (value) Get.offAllNamed('/home');
-          });
-        }
-      },
-      child: Text(
-        'Sign in',
-        style: GoogleFonts.inter(
-          fontSize: 16.0,
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
   }
 
   Widget _buildContinueText() {

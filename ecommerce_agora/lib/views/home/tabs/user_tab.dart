@@ -1,8 +1,8 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
 import 'package:ecommerce_agora/controllers/themes/themes_controller.dart';
 import 'package:ecommerce_agora/extensions/StringExtension.dart';
-import 'package:ecommerce_agora/shared/widgets/constant/color_constants.dart';
-import 'package:ecommerce_agora/shared/widgets/constant/firebase_constant.dart';
+import 'package:ecommerce_agora/shared/constant/color_constants.dart';
+import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
 import 'package:ecommerce_agora/views/home/tabs/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -109,15 +109,15 @@ class UserTab extends GetWidget<AuthController> {
                                   color: Get.isDarkMode
                                       ? ColorConstants.gray700
                                       : Colors.grey.shade200),
-                              child: InkWell(
-                                onTap: () {
-                                  Get.to(() => ProfileScreen());
-                                },
-                                child: Row(
-                                  children: [
-                                    controller.firebaseUser.value!.photoURL !=
-                                            null
-                                        ? Container(
+                              child: Row(
+                                children: [
+                                  controller.firebaseUser.value?.photoURL !=
+                                          null
+                                      ? InkWell(
+                                          onTap: () {
+                                            Get.to(() => ProfileScreen());
+                                          },
+                                          child: Container(
                                             width: 52,
                                             height: 52,
                                             clipBehavior: Clip.hardEdge,
@@ -165,8 +165,13 @@ class UserTab extends GetWidget<AuthController> {
                                                 );
                                               },
                                             ),
-                                          )
-                                        : Container(
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            Get.to(() => ProfileScreen());
+                                          },
+                                          child: Container(
                                             width: 52,
                                             height: 52,
                                             decoration: BoxDecoration(
@@ -180,19 +185,91 @@ class UserTab extends GetWidget<AuthController> {
                                                   color: Colors.grey.shade500),
                                             ),
                                           ),
-                                    const SizedBox(width: 16),
-                                    Text(
-                                        controller.firebaseUser.value!.email !=
-                                                null
-                                            ? controller
-                                                .firebaseUser.value!.email!
-                                            : '',
-                                        style: theme.textTheme.subtitle1
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.blue)),
-                                  ],
-                                ),
+                                        ),
+                                  const SizedBox(width: 16),
+                                  Obx(() => Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                controller.firebaseUser.value !=
+                                                        null
+                                                    ? controller
+                                                            .firebaseUser
+                                                            .value
+                                                            ?.displayName ??
+                                                        controller.firebaseUser
+                                                            .value!.email!
+                                                    : '',
+                                                style: theme
+                                                    .textTheme.titleLarge
+                                                    ?.copyWith(
+                                                        color: Colors.blue),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            controller.firebaseUser.value !=
+                                                    null
+                                                ? controller.firebaseUser.value!
+                                                        .emailVerified
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                            const Icon(
+                                                              Icons
+                                                                  .verified_user_outlined,
+                                                              color: Color(
+                                                                  0xFFF56B3F),
+                                                            ),
+                                                            Text('Verified',
+                                                                style: theme
+                                                                    .textTheme
+                                                                    .bodyText1
+                                                                    ?.copyWith(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600))
+                                                          ])
+                                                    : InkWell(
+                                                        onTap: () {
+                                                          print(
+                                                              'SENDING EMAIL...');
+                                                          controller
+                                                              .verifyEmail();
+                                                        },
+                                                        child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              const Icon(
+                                                                Icons
+                                                                    .verified_user_outlined,
+                                                                size: 18,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Text('Unverified',
+                                                                  style: theme
+                                                                      .textTheme
+                                                                      .bodyText1
+                                                                      ?.copyWith(
+                                                                          color: Colors
+                                                                              .grey
+                                                                              .shade600))
+                                                            ]),
+                                                      )
+                                                : const SizedBox.shrink(),
+                                          ],
+                                        ),
+                                      ))
+                                ],
                               ),
                             ),
                       const SizedBox(height: 32),
@@ -223,8 +300,8 @@ class UserTab extends GetWidget<AuthController> {
                       _buildListTile(
                           'Logout', Icons.exit_to_app, '', Colors.red, theme,
                           onTab: () {
-                        authController.logout();
                         Get.offAllNamed('/login');
+                        authController.logout();
                       }),
                     ],
                   ),

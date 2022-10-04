@@ -1,5 +1,5 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
-import 'package:ecommerce_agora/shared/widgets/constant/firebase_constant.dart';
+import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

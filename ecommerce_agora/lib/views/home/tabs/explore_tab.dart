@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_agora/controllers/home/home_controller.dart';
 import 'package:ecommerce_agora/models/categories/CategoryModel.dart';
 import 'package:ecommerce_agora/models/offers/OfferModel.dart';
-import 'package:ecommerce_agora/shared/widgets/constant/color_constants.dart';
+import 'package:ecommerce_agora/shared/constant/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';

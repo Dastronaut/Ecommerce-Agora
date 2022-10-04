@@ -391,8 +391,10 @@ class RegisterPage extends GetWidget<AuthController> {
         if (authController.checkRegisterValid(
             emailController.text, passController.text, repassController.text)) {
           authController
-              .register(emailController.text, passController.text)
+              .register(emailController.text.trim(), passController.text.trim())
               .then((value) {
+            controller.errorRegistMsg.value = '';
+            controller.errorLoginMsg.value = '';
             if (value) Get.offAllNamed('/login');
           });
         }

@@ -2,7 +2,7 @@ import 'package:ecommerce_agora/app_binding.dart';
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
 import 'package:ecommerce_agora/controllers/themes/themes_controller.dart';
 import 'package:ecommerce_agora/routes/routes.dart';
-import 'package:ecommerce_agora/shared/widgets/constant/firebase_constant.dart';
+import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
 import 'package:ecommerce_agora/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

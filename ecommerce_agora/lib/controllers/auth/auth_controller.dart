@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:ecommerce_agora/shared/widgets/constant/firebase_constant.dart';
-import 'package:ecommerce_agora/shared/widgets/constant/firestore_constant.dart';
+import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
+import 'package:ecommerce_agora/shared/widgets/app_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,21 +15,27 @@ class AuthController extends GetxController {
   final storage = GetStorage();
 
   late Rx<User?> firebaseUser;
+
   RxBool isShowPW = true.obs;
   RxBool isShowrePW = true.obs;
   RxBool isRemember = false.obs;
+
   RxString errorLoginMsg = "".obs;
   RxString errorRegistMsg = "".obs;
-  late UserCredential userCredential;
+  RxString errorForgotPWMsg = "".obs;
 
-  TextEditingController? displayNameController;
-  TextEditingController? aboutMeController;
-  final TextEditingController phoneController = TextEditingController();
+  late UserCredential userCredential;
+  late Timer timer;
 
   RxString dialCodeDigits = '+84'.obs;
 
   RxBool isLoading = false.obs;
   File? avatarImageFile;
+
+  final TextEditingController displayNameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
 
   final FocusNode focusNodeNickname = FocusNode();
 
@@ -39,7 +46,6 @@ class AuthController extends GetxController {
     firebaseUser = Rx<User?>(firebaseAuth.currentUser);
 
     firebaseUser.bindStream(firebaseAuth.userChanges());
-    print('CURRENT USER: ${firebaseUser.value}');
   }
 
   @override
@@ -48,6 +54,9 @@ class AuthController extends GetxController {
     isRemember.value = false;
     isShowPW.value = true;
     isShowrePW.value = true;
+    displayNameController.dispose();
+    phoneNumberController.dispose();
+    timer.cancel();
   }
 
   bool checkLoginValid(String email, String password) {
@@ -109,19 +118,19 @@ class AuthController extends GetxController {
       if (userCredential.user?.uid == null) {
         return false;
       }
-      firebaseFirestore
-          .collection(FirestoreConstants.pathUserCollection)
-          .doc(userCredential.user!.uid)
-          .set({
-        FirestoreConstants.displayName: email,
-        FirestoreConstants.photoUrl: '',
-        FirestoreConstants.phoneNumber: '',
-        FirestoreConstants.id: userCredential.user?.uid,
-        FirestoreConstants.email: email,
-        FirestoreConstants.createAt: userCredential.user?.metadata.creationTime,
-        FirestoreConstants.lastSignInTime:
-            userCredential.user?.metadata.lastSignInTime,
-      });
+      // firebaseFirestore
+      //     .collection(FirestoreConstants.pathUserCollection)
+      //     .doc(userCredential.user!.uid)
+      //     .set({
+      //   FirestoreConstants.displayName: email,
+      //   FirestoreConstants.photoUrl: '',
+      //   FirestoreConstants.phoneNumber: '',
+      //   FirestoreConstants.id: userCredential.user?.uid,
+      //   FirestoreConstants.email: email,
+      //   FirestoreConstants.createAt: userCredential.user?.metadata.creationTime,
+      //   FirestoreConstants.lastSignInTime:
+      //       userCredential.user?.metadata.lastSignInTime,
+      // });
       print('USER CREDENTIAL: ${userCredential.toString()}');
       return true;
     } on FirebaseAuthException catch (e) {
@@ -144,7 +153,7 @@ class AuthController extends GetxController {
       if (userCredential.user?.uid == null) {
         return false;
       } else {
-        storage.write('currentUID', userCredential.user!.uid);
+        storage.write('currentUID', userCredential.user?.uid);
         print('AUTH LOGED IN: ${userCredential.toString()}');
       }
 
@@ -156,6 +165,30 @@ class AuthController extends GetxController {
         errorLoginMsg.value = 'Wrong password provided for that user.';
       }
       return false;
+    }
+  }
+
+  Future<void> verifyEmail() async {
+    try {
+      await firebaseUser.value?.sendEmailVerification();
+      AppToast.showSuccess('Sent verify email successful');
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        checkEmailVerified();
+      });
+    } catch (e) {
+      AppToast.showError('Sent verify email failure');
+    }
+  }
+
+  Future<void> checkEmailVerified() async {
+    try {
+      await firebaseUser.value!.reload();
+      if (firebaseUser.value!.emailVerified) {
+        timer.cancel();
+        update();
+      }
+    } catch (e) {
+      timer.cancel();
     }
   }
 
@@ -178,6 +211,27 @@ class AuthController extends GetxController {
   Future<void> loginAnonymously() async {
     userCredential = await FirebaseAuth.instance.signInAnonymously();
     print('ANONYMOUSLY LOGED IN: ${userCredential.toString()}');
+  }
+
+  Future<void> forgotPassword(String email) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+      AppToast.snackBar('success', 'Reset password link has sent');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        errorRegistMsg.value = 'The email address is not valid.';
+      }
+    }
+  }
+
+  Future<void> updateInfor(String imgUrl, String displayName) async {
+    try {
+      await firebaseUser.value?.updatePhotoURL('');
+      await firebaseUser.value?.updateDisplayName(displayName);
+      AppToast.showSuccess('Update Success');
+    } catch (e) {
+      AppToast.showError('Update Failed');
+    }
   }
 
   Future<void> getImage() async {
