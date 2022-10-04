@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 class ThemesController extends GetxController {
   final storage = GetStorage();
 
-  var theme = 'light';
+  String theme = 'light';
 
   @override
   void onInit() {

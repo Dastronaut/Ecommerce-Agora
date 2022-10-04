@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
 import 'package:ecommerce_agora/shared/widgets/common_widget.dart';
 import 'package:ecommerce_agora/shared/widgets/loading_view.dart';
+import 'package:ecommerce_agora/views/home/tabs/user_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -17,11 +18,7 @@ class ProfileScreen extends GetWidget<AuthController> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Profile',
-        ),
-      ),
+      appBar: _buildAppBar(theme),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Stack(
@@ -61,6 +58,21 @@ class ProfileScreen extends GetWidget<AuthController> {
           ],
         ),
       ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(ThemeData theme) {
+    return AppBar(
+      title: Text(
+        'Profile',
+        style: theme.textTheme.titleLarge,
+      ),
+      centerTitle: true,
+      leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Get.off(() => UserTab());
+          }),
     );
   }
 

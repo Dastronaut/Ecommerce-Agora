@@ -75,7 +75,7 @@ class RegisterPage extends GetWidget<AuthController> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            'Create account to sign in App',
+                            'register_subtitle'.tr,
                             style: GoogleFonts.inter(
                               fontSize: 14.0,
                               color: Colors.white,
@@ -130,7 +130,7 @@ class RegisterPage extends GetWidget<AuthController> {
 
   Widget logo(double height_, double width_) {
     return SvgPicture.asset(
-      'assets/logo2.svg',
+      'assets/images/logo2.svg',
       height: height_,
       width: width_,
     );
@@ -144,16 +144,16 @@ class RegisterPage extends GetWidget<AuthController> {
           color: Colors.white,
           letterSpacing: 1.999999953855673,
         ),
-        children: const [
+        children: [
           TextSpan(
-            text: 'SIGN UP ',
-            style: TextStyle(
+            text: 'signup'.tr,
+            style: const TextStyle(
               fontWeight: FontWeight.w800,
             ),
           ),
           TextSpan(
-            text: 'AGORA',
-            style: TextStyle(
+            text: 'title'.tr,
+            style: const TextStyle(
               color: Color(0xFFFE9879),
               fontWeight: FontWeight.w800,
             ),
@@ -208,7 +208,7 @@ class RegisterPage extends GetWidget<AuthController> {
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
-                    hintText: 'Enter your gmail address',
+                    hintText: 'mail_hint_text'.tr,
                     hintStyle: GoogleFonts.inter(
                       fontSize: 14.0,
                       color: Colors.white70,
@@ -269,7 +269,7 @@ class RegisterPage extends GetWidget<AuthController> {
                       fontWeight: FontWeight.w500,
                     ),
                     decoration: InputDecoration(
-                        hintText: 'Enter your password',
+                        hintText: 'password_hint_text'.tr,
                         hintStyle: GoogleFonts.inter(
                           fontSize: 14.0,
                           color: Colors.white70,
@@ -340,7 +340,7 @@ class RegisterPage extends GetWidget<AuthController> {
                       fontWeight: FontWeight.w500,
                     ),
                     decoration: InputDecoration(
-                        hintText: 'Re-enter your password',
+                        hintText: 'repassword_hint_text'.tr,
                         hintStyle: GoogleFonts.inter(
                           fontSize: 14.0,
                           color: Colors.white70,
@@ -400,7 +400,7 @@ class RegisterPage extends GetWidget<AuthController> {
         }
       },
       child: Text(
-        'Sign up',
+        'signup'.tr,
         style: GoogleFonts.inter(
           fontSize: 16.0,
           color: Colors.white,
@@ -445,7 +445,7 @@ class RegisterPage extends GetWidget<AuthController> {
                 ),
                 //google txt
                 Text(
-                  'Google',
+                  'google'.tr,
                   style: GoogleFonts.inter(
                     fontSize: 14.0,
                     color: Colors.white,
@@ -491,7 +491,7 @@ class RegisterPage extends GetWidget<AuthController> {
 
                 //facebook txt
                 Text(
-                  'Facebook',
+                  'facebook'.tr,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                     fontSize: 14.0,
@@ -511,7 +511,7 @@ class RegisterPage extends GetWidget<AuthController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Already have account? ',
+          'have_account'.tr,
           style: GoogleFonts.nunito(
             fontWeight: FontWeight.w600,
             fontSize: 16.0,
@@ -521,7 +521,7 @@ class RegisterPage extends GetWidget<AuthController> {
         TextButton(
             onPressed: () => Get.offAllNamed('/login'),
             child: Text(
-              'Sign in',
+              'signin'.tr,
               style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w600,
                 fontSize: 16.0,

@@ -17,7 +17,7 @@ class LoginPage extends GetWidget<AuthController> {
       backgroundColor: const Color(0xFF21899C),
       body: SafeArea(
         child: SizedBox(
-          height: size.height,
+          height: size.height - 50,
           child: Stack(
             children: <Widget>[
               //left side background design. I use a svg image here
@@ -49,7 +49,7 @@ class LoginPage extends GetWidget<AuthController> {
                   right: 2,
                   child: TextButton(
                     child: Text(
-                      'Skip',
+                      'skip'.tr,
                       style: GoogleFonts.inter(
                         fontSize: 16.0,
                         fontStyle: FontStyle.italic,
@@ -92,7 +92,7 @@ class LoginPage extends GetWidget<AuthController> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            'Continue with email for sign in App',
+                            'login_subtitle'.tr,
                             style: GoogleFonts.inter(
                               fontSize: 14.0,
                               color: Colors.white,
@@ -122,7 +122,7 @@ class LoginPage extends GetWidget<AuthController> {
                           child: Column(
                             children: [
                               _buildForgotPW(size),
-                              appButton(size, 'Sign in', () {
+                              appButton(size, 'signin'.tr, () {
                                 if (authController.checkLoginValid(
                                     controller.emailController.text,
                                     controller.passController.text)) {
@@ -170,7 +170,7 @@ class LoginPage extends GetWidget<AuthController> {
 
   Widget logo(double height_, double width_) {
     return SvgPicture.asset(
-      'assets/logo2.svg',
+      'assets/images/logo2.svg',
       height: height_,
       width: width_,
     );
@@ -184,14 +184,14 @@ class LoginPage extends GetWidget<AuthController> {
           color: Colors.white,
           letterSpacing: 1.999999953855673,
         ),
-        children: const [
+        children: [
           TextSpan(
-            text: 'LOGIN TO ',
-            style: TextStyle(
+            text: 'login'.tr.toUpperCase(),
+            style: const TextStyle(
               fontWeight: FontWeight.w800,
             ),
           ),
-          TextSpan(
+          const TextSpan(
             text: 'AGORA',
             style: TextStyle(
               color: Color(0xFFFE9879),
@@ -248,7 +248,7 @@ class LoginPage extends GetWidget<AuthController> {
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
-                    hintText: 'Enter your gmail address',
+                    hintText: 'mail_hint_text'.tr,
                     hintStyle: GoogleFonts.inter(
                       fontSize: 14.0,
                       color: Colors.white70,
@@ -309,7 +309,7 @@ class LoginPage extends GetWidget<AuthController> {
                       fontWeight: FontWeight.w500,
                     ),
                     decoration: InputDecoration(
-                        hintText: 'Enter your password',
+                        hintText: 'password_hint_text'.tr,
                         hintStyle: GoogleFonts.inter(
                           fontSize: 14.0,
                           color: Colors.white70,
@@ -335,35 +335,6 @@ class LoginPage extends GetWidget<AuthController> {
   }
 
   Widget _buildRemember(Size size) {
-    Obx(() => CheckboxListTile(
-          title: Text(
-            'Remember me',
-            style: GoogleFonts.inter(
-              fontSize: 14.0,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          value: authController.isRemember.value,
-          onChanged: (value) {
-            authController.isRemember.value = !authController.isRemember.value;
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-          activeColor: const Color(0xFF00AD8F),
-          checkColor: Colors.white,
-          checkboxShape: const CircleBorder(
-            side: BorderSide(
-              color: Color(0xFF7BF4DF),
-              width: 0.5,
-            ),
-          ),
-          contentPadding: EdgeInsets.zero,
-          side: const BorderSide(
-            color: Color(0xFF7BF4DF),
-            width: 0.5,
-          ),
-        ));
-
     return SizedBox(
       width: size.width,
       child: Row(
@@ -390,7 +361,7 @@ class LoginPage extends GetWidget<AuthController> {
                 ),
               )),
           Text(
-            'Remember me',
+            'remember_me'.tr,
             style: GoogleFonts.inter(
               fontSize: 14.0,
               color: Colors.white,
@@ -407,7 +378,7 @@ class LoginPage extends GetWidget<AuthController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Forgot password? ',
+          'Forgot password? '.tr,
           style: GoogleFonts.nunito(
             fontWeight: FontWeight.w600,
             fontSize: 14.0,
@@ -419,7 +390,7 @@ class LoginPage extends GetWidget<AuthController> {
               Get.to(() => ForgotPasswordPage());
             },
             child: Text(
-              'Click here!',
+              'click_here'.tr,
               style: GoogleFonts.nunito(
                 textStyle: const TextStyle(
                   decoration: TextDecoration.underline,
@@ -459,7 +430,7 @@ class LoginPage extends GetWidget<AuthController> {
         )),
         Expanded(
           child: Text(
-            'Or Continue with',
+            'continue_with'.tr,
             style: GoogleFonts.inter(
               fontSize: 12.0,
               color: Colors.white,
@@ -510,7 +481,7 @@ class LoginPage extends GetWidget<AuthController> {
                 ),
                 //google txt
                 Text(
-                  'Google',
+                  'google'.tr,
                   style: GoogleFonts.inter(
                     fontSize: 14.0,
                     color: Colors.white,
@@ -556,7 +527,7 @@ class LoginPage extends GetWidget<AuthController> {
 
                 //facebook txt
                 Text(
-                  'Facebook',
+                  'facebook'.tr,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                     fontSize: 14.0,
@@ -576,7 +547,7 @@ class LoginPage extends GetWidget<AuthController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Don’t have account? ',
+          'no_acount'.tr,
           style: GoogleFonts.nunito(
             fontWeight: FontWeight.w600,
             fontSize: 16.0,
@@ -586,7 +557,7 @@ class LoginPage extends GetWidget<AuthController> {
         TextButton(
             onPressed: () => Get.toNamed('/register'),
             child: Text(
-              'Sign up',
+              'signup'.tr,
               style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w600,
                 fontSize: 16.0,

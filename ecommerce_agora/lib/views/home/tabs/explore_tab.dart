@@ -33,7 +33,7 @@ class ExploreTab extends GetView<HomeController> {
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 20),
-                      hintText: "Search E.g iPhone X",
+                      hintText: 'search_hint_text'.tr,
                       suffixIcon: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Container(
@@ -60,7 +60,7 @@ class ExploreTab extends GetView<HomeController> {
               const SizedBox(
                 height: 16,
               ),
-              _buildSection('Top Categories', theme),
+              _buildSection('top_categoty'.tr, theme),
               const SizedBox(
                 height: 8,
               ),
@@ -68,7 +68,7 @@ class ExploreTab extends GetView<HomeController> {
               const SizedBox(
                 height: 16,
               ),
-              _buildSection('Discounts', theme),
+              _buildSection('discount'.tr, theme),
               const SizedBox(
                 height: 8,
               ),
@@ -135,8 +135,9 @@ class ExploreTab extends GetView<HomeController> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: (Get.isDarkMode ? Colors.white : Colors.blueGrey)
-                      .withOpacity(
-                          controller.currentBanner == entry.key ? 0.9 : 0.2)),
+                      .withOpacity(controller.currentBanner.value == entry.key
+                          ? 0.9
+                          : 0.2)),
             );
           }).toList(),
         ));

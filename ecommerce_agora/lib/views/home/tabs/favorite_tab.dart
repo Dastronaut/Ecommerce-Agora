@@ -1,6 +1,9 @@
+import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
+import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class FavoriteTab extends StatelessWidget {
+class FavoriteTab extends GetWidget<AuthController> {
   const FavoriteTab({Key? key}) : super(key: key);
 
   @override
@@ -8,8 +11,14 @@ class FavoriteTab extends StatelessWidget {
     return SafeArea(
       child: Container(
         color: Colors.yellow,
-        child: const Center(
-          child: Text('Favorite'),
+        child: Center(
+          child: TextButton(
+            child: const Text('sign out'),
+            onPressed: () {
+              Get.offAllNamed('/login');
+              authController.logout();
+            },
+          ),
         ),
       ),
     );

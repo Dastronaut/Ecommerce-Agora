@@ -37,21 +37,21 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "Welcome to Agora",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            Text(
+              'welcome'.tr,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             Image.asset(
-              'assets/splash.png',
+              'assets/images/splash.png',
               width: 300,
               height: 300,
             ),
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              "Everything what you need?",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            Text(
+              'slogan'.tr,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(
               height: 20,

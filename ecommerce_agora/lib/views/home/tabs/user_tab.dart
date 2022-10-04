@@ -1,6 +1,7 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
+import 'package:ecommerce_agora/controllers/lang/language_controller.dart';
 import 'package:ecommerce_agora/controllers/themes/themes_controller.dart';
-import 'package:ecommerce_agora/extensions/StringExtension.dart';
+import 'package:ecommerce_agora/extensions/string_extension.dart';
 import 'package:ecommerce_agora/shared/constant/color_constants.dart';
 import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
 import 'package:ecommerce_agora/views/home/tabs/screens/profile_screen.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 class UserTab extends GetWidget<AuthController> {
   UserTab({Key? key}) : super(key: key);
   final ThemesController _themesController = Get.find();
+  final LanguageController _languageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class UserTab extends GetWidget<AuthController> {
                     centerTitle: false,
                     titlePadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(
-                      'Settings',
+                      'setting'.tr,
                       style: theme.textTheme.headline6,
                     ),
                   ),
@@ -43,7 +45,7 @@ class UserTab extends GetWidget<AuthController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      Text("Account",
+                      Text('account'.tr,
                           style: theme.textTheme.headline6
                               ?.copyWith(fontWeight: FontWeight.w400)),
                       const SizedBox(height: 16),
@@ -226,7 +228,7 @@ class UserTab extends GetWidget<AuthController> {
                                                               color: Color(
                                                                   0xFFF56B3F),
                                                             ),
-                                                            Text('Verified',
+                                                            Text('verified'.tr,
                                                                 style: theme
                                                                     .textTheme
                                                                     .bodyText1
@@ -255,7 +257,9 @@ class UserTab extends GetWidget<AuthController> {
                                                               const SizedBox(
                                                                 width: 8,
                                                               ),
-                                                              Text('Unverified',
+                                                              Text(
+                                                                  'unverified'
+                                                                      .tr,
                                                                   style: theme
                                                                       .textTheme
                                                                       .bodyText1
@@ -273,39 +277,44 @@ class UserTab extends GetWidget<AuthController> {
                               ),
                             ),
                       const SizedBox(height: 32),
-                      Text("Settings",
+                      Text('setting'.tr,
                           style: theme.textTheme.headline6
                               ?.copyWith(fontWeight: FontWeight.w400)),
                       const SizedBox(height: 16),
                       GetBuilder<ThemesController>(builder: (_) {
-                        return _buildListTile('Appearance', Icons.dark_mode,
-                            _.theme.toCapitalized(), Colors.purple, theme,
-                            onTab: () => _showAppearanceModal(theme, _.theme));
+                        return _buildListTile('appearance'.tr, Icons.dark_mode,
+                            _.theme.tr.toCapitalized(), Colors.purple, theme,
+                            onTab: () =>
+                                _showThemeAppearanceModal(theme, _.theme));
 
                         // return Text(_.theme);
                       }),
                       const SizedBox(height: 8),
-                      _buildListTile('Language', Icons.language, 'English',
-                          Colors.orange, theme,
-                          onTab: () {}),
+                      GetBuilder<LanguageController>(builder: (_) {
+                        return _buildListTile('language'.tr, Icons.language,
+                            _.lang.tr.toCapitalized(), Colors.orange, theme,
+                            onTab: () =>
+                                _showLangAppearanceModal(theme, _.lang));
+                        // return Text(_.theme);
+                      }),
                       const SizedBox(height: 8),
-                      _buildListTile('Notifications',
+                      _buildListTile('notifications'.tr,
                           Icons.notifications_outlined, '', Colors.blue, theme,
                           onTab: () {}),
                       const SizedBox(height: 8),
                       _buildListTile(
-                          'Help', Icons.help, '', Colors.green, theme,
+                          'help'.tr, Icons.help, '', Colors.green, theme,
                           onTab: () {}),
                       const SizedBox(height: 8),
                       _buildListTile(
-                          'Logout', Icons.exit_to_app, '', Colors.red, theme,
+                          'logout'.tr, Icons.exit_to_app, '', Colors.red, theme,
                           onTab: () {
                         Get.offAllNamed('/login');
                         authController.logout();
                       }),
                     ],
                   ),
-                  Text("Version 1.0.0",
+                  Text('version'.tr,
                       style: theme.textTheme.bodyText2
                           ?.copyWith(color: Colors.grey.shade500)),
                 ],
@@ -349,7 +358,7 @@ class UserTab extends GetWidget<AuthController> {
         onTap: onTab);
   }
 
-  _showAppearanceModal(ThemeData theme, String current) {
+  _showThemeAppearanceModal(ThemeData theme, String current) {
     Get.bottomSheet(Container(
       padding: const EdgeInsets.all(16),
       height: 320,
@@ -364,14 +373,14 @@ class UserTab extends GetWidget<AuthController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Select a Theme",
+            'select_theme'.tr,
             style: theme.textTheme.subtitle1,
           ),
           const SizedBox(height: 32),
           _buildBottomSheetItem(
             Icons.brightness_5,
             Colors.blue,
-            "Light",
+            'light'.tr,
             theme,
             current,
             () {
@@ -384,7 +393,7 @@ class UserTab extends GetWidget<AuthController> {
           _buildBottomSheetItem(
             Icons.brightness_2,
             Colors.orange,
-            "Dark",
+            'dark'.tr,
             theme,
             current,
             () {
@@ -397,7 +406,7 @@ class UserTab extends GetWidget<AuthController> {
           _buildBottomSheetItem(
             Icons.brightness_6,
             Colors.blueGrey,
-            "System",
+            'system'.tr,
             theme,
             current,
             () {
@@ -411,8 +420,71 @@ class UserTab extends GetWidget<AuthController> {
     ));
   }
 
+  _showLangAppearanceModal(ThemeData theme, String current) {
+    Get.bottomSheet(Container(
+      padding: const EdgeInsets.all(16),
+      height: 320,
+      decoration: BoxDecoration(
+          color: Get.isDarkMode ? Colors.grey.shade900 : Colors.grey.shade200,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          )),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'select_lang'.tr,
+            style: theme.textTheme.subtitle1,
+          ),
+          const SizedBox(height: 32),
+          _buildLangBottomSheetItem(
+            Icons.language_outlined,
+            Colors.blue,
+            'en_lang'.tr,
+            theme,
+            () {
+              _languageController.setLang('en_lang');
+              Get.back();
+            },
+            current == 'en_lang' ? Colors.blue : Colors.transparent,
+          ),
+          const SizedBox(height: 16),
+          _buildLangBottomSheetItem(
+            Icons.language_outlined,
+            Colors.orange,
+            'vi_lang'.tr,
+            theme,
+            () {
+              _languageController.setLang('vi_lang');
+              Get.back();
+            },
+            current == 'vi_lang' ? Colors.orange : Colors.transparent,
+          ),
+        ],
+      ),
+    ));
+  }
+
   Widget _buildBottomSheetItem(IconData icon, Color iconColor, String text,
       ThemeData theme, String current, onTap, Color checkColor) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: iconColor,
+      ),
+      title: Text(text, style: theme.textTheme.bodyText1),
+      onTap: onTap,
+      trailing: Icon(
+        Icons.check,
+        color: checkColor,
+      ),
+    );
+  }
+
+  Widget _buildLangBottomSheetItem(IconData icon, Color iconColor, String text,
+      ThemeData theme, onTap, Color checkColor) {
     return ListTile(
       leading: Icon(
         icon,

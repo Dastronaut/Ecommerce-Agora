@@ -1,6 +1,7 @@
 import 'package:ecommerce_agora/controllers/auth/auth_controller.dart';
 import 'package:ecommerce_agora/shared/widgets/common_widget.dart';
 import 'package:ecommerce_agora/shared/widgets/loading_view.dart';
+import 'package:ecommerce_agora/views/authentication/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,11 +17,7 @@ class ForgotPasswordPage extends GetWidget<AuthController> {
     final theme = Theme.of(context);
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Forgot password',
-          ),
-        ),
+        appBar: _buildAppBar(theme),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -29,13 +26,13 @@ class ForgotPasswordPage extends GetWidget<AuthController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text("Your email",
+                    Text('your_email'.tr,
                         style: theme.textTheme.headline6
                             ?.copyWith(fontWeight: FontWeight.w400)),
                     const SizedBox(height: 8),
                     _buildEmailTextField(size),
                     const SizedBox(height: 16),
-                    appButton(size, 'Send', () {
+                    appButton(size, 'send'.tr, () {
                       authController.forgotPassword(
                           controller.emailController.text.trim());
                       FocusManager.instance.primaryFocus?.unfocus();
@@ -51,6 +48,21 @@ class ForgotPasswordPage extends GetWidget<AuthController> {
             ),
           ),
         ));
+  }
+
+  PreferredSizeWidget _buildAppBar(ThemeData theme) {
+    return AppBar(
+      title: Text(
+        'forgot_password'.tr,
+        style: theme.textTheme.titleLarge,
+      ),
+      centerTitle: true,
+      leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Get.off(() => LoginPage());
+          }),
+    );
   }
 
   Widget _buildEmailTextField(Size size) {
@@ -98,7 +110,7 @@ class ForgotPasswordPage extends GetWidget<AuthController> {
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
-                    hintText: 'Enter your gmail address',
+                    hintText: 'mail_hint_text'.tr,
                     hintStyle: GoogleFonts.inter(
                       fontSize: 14.0,
                       color: Colors.white70,
