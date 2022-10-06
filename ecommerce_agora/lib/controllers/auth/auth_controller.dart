@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ecommerce_agora/shared/constant/auth_const.dart';
 import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
 import 'package:ecommerce_agora/shared/widgets/app_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,18 +17,13 @@ class AuthController extends GetxController {
 
   late Rx<User?> firebaseUser;
 
-  RxBool isShowPW = true.obs;
-  RxBool isShowrePW = true.obs;
-  RxBool isRemember = false.obs;
-
-  RxString errorLoginMsg = "".obs;
-  RxString errorRegistMsg = "".obs;
-  RxString errorForgotPWMsg = "".obs;
+  final RxList<String> errors = <String>[].obs;
 
   late UserCredential userCredential;
   late Timer timer;
 
   RxString dialCodeDigits = '+84'.obs;
+  RxBool isRemember = false.obs;
 
   RxBool isLoading = false.obs;
   File? avatarImageFile;
@@ -36,8 +32,11 @@ class AuthController extends GetxController {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+  final TextEditingController repassController = TextEditingController();
 
   final FocusNode focusNodeNickname = FocusNode();
+  GlobalKey<FormState> singInFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> singUpFormKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
@@ -51,64 +50,22 @@ class AuthController extends GetxController {
   @override
   void dispose() {
     super.dispose();
-    isRemember.value = false;
-    isShowPW.value = true;
-    isShowrePW.value = true;
     displayNameController.dispose();
     phoneNumberController.dispose();
+    passController.dispose();
     timer.cancel();
   }
 
-  bool checkLoginValid(String email, String password) {
-    if (email.isEmpty && password.isEmpty) {
-      errorLoginMsg.value = 'Fill required fields';
-      return false;
-    }
-    if (email.isEmpty) {
-      errorLoginMsg.value = 'Gmail must be fill';
-      return false;
-    }
-
-    if (password.isEmpty) {
-      errorLoginMsg.value = 'Password must be fill';
-      return false;
-    }
-    if (!email.isEmail) {
-      errorLoginMsg.value = 'Gmail address is invalid';
-      return false;
-    }
-    errorLoginMsg.value = '';
-    return true;
+  void clearLoginData() {
+    errors.clear();
+    emailController.clear();
+    passController.clear();
   }
 
-  bool checkRegisterValid(String email, String password, String repassword) {
-    if (email.isEmpty && password.isEmpty && repassword.isEmpty) {
-      errorRegistMsg.value = 'Fill required fields';
-      return false;
-    }
-    if (email.isEmpty) {
-      errorRegistMsg.value = 'Gmail must be fill';
-      return false;
-    }
-
-    if (password.isEmpty) {
-      errorRegistMsg.value = 'Password must be fill';
-      return false;
-    }
-    if (!email.isEmail) {
-      errorRegistMsg.value = 'Gmail address is invalid';
-      return false;
-    }
-    if (repassword.isEmpty) {
-      errorRegistMsg.value = 'Re-password must be fill';
-      return false;
-    }
-    if (password != repassword) {
-      errorRegistMsg.value = 'Re-password is not pair';
-      return false;
-    }
-    errorRegistMsg.value = '';
-    return true;
+  void clearRegisterData() {
+    errors.clear();
+    passController.clear();
+    repassController.clear();
   }
 
   Future<bool> register(String email, password) async {
@@ -132,16 +89,19 @@ class AuthController extends GetxController {
       //       userCredential.user?.metadata.lastSignInTime,
       // });
       print('USER CREDENTIAL: ${userCredential.toString()}');
+      AppToast.showSuccess('Sign up successful with $email');
       return true;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        errorRegistMsg.value = 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        errorRegistMsg.value = 'The account already exists for that email.';
+      if (e.code == 'email-already-in-use') {
+        addError(error: kEmailInUse);
       }
+      if (e.code == 'weak-password') {
+        addError(error: kWeakPassword);
+      }
+      AppToast.showError('Sign up failure with $email');
       return false;
     } catch (e) {
-      print(e);
+      AppToast.showError('Sign up failure with $email');
       return false;
     }
   }
@@ -160,9 +120,10 @@ class AuthController extends GetxController {
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        errorLoginMsg.value = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorLoginMsg.value = 'Wrong password provided for that user.';
+        addError(error: kUserNotFound);
+      }
+      if (e.code == 'wrong-password') {
+        addError(error: kWrongPassword);
       }
       return false;
     }
@@ -219,8 +180,9 @@ class AuthController extends GetxController {
       AppToast.snackBar('success', 'Reset password link has sent');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        errorRegistMsg.value = 'The email address is not valid.';
+        AppToast.snackBar('error', 'Your email is invalid');
       }
+      AppToast.snackBar('error', 'Something wrong');
     }
   }
 
@@ -250,5 +212,13 @@ class AuthController extends GetxController {
       isLoading.value = true;
       // uploadFile();
     }
+  }
+
+  void addError({required String error}) {
+    if (!errors.contains(error)) errors.add(error);
+  }
+
+  void removeError({required String error}) {
+    if (errors.contains(error)) errors.remove(error);
   }
 }

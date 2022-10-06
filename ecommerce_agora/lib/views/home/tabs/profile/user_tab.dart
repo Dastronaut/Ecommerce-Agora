@@ -4,7 +4,7 @@ import 'package:ecommerce_agora/controllers/themes/themes_controller.dart';
 import 'package:ecommerce_agora/extensions/string_extension.dart';
 import 'package:ecommerce_agora/shared/constant/color_constants.dart';
 import 'package:ecommerce_agora/shared/constant/firebase_constant.dart';
-import 'package:ecommerce_agora/views/home/tabs/screens/profile_screen.dart';
+import 'package:ecommerce_agora/views/home/tabs/profile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

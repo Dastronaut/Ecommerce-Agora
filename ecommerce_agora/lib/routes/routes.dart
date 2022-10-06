@@ -1,5 +1,6 @@
 import 'package:ecommerce_agora/controllers/auth/auth_binding.dart';
 import 'package:ecommerce_agora/controllers/home/home_binding.dart';
+import 'package:ecommerce_agora/controllers/splash/splash_biding.dart';
 import 'package:ecommerce_agora/views/authentication/login_page.dart';
 import 'package:ecommerce_agora/views/authentication/register_page.dart';
 import 'package:ecommerce_agora/views/splash/splash_screen.dart';
@@ -13,6 +14,7 @@ class Routes {
     GetPage(
       name: '/splash',
       page: () => SplashPage(),
+      binding: SplashBinding(),
     ),
     GetPage(
       name: '/login',

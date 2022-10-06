@@ -5,10 +5,10 @@ import 'package:ecommerce_agora/models/products/ProductModel.dart';
 import 'package:ecommerce_agora/providers/category_provider.dart';
 import 'package:ecommerce_agora/providers/offer_provider.dart';
 import 'package:ecommerce_agora/providers/product_provider.dart';
-import 'package:ecommerce_agora/views/home/tabs/card_tab.dart';
-import 'package:ecommerce_agora/views/home/tabs/explore_tab.dart';
-import 'package:ecommerce_agora/views/home/tabs/favorite_tab.dart';
-import 'package:ecommerce_agora/views/home/tabs/user_tab.dart';
+import 'package:ecommerce_agora/views/home/tabs/card/card_tab.dart';
+import 'package:ecommerce_agora/views/home/tabs/explore/explore_tab.dart';
+import 'package:ecommerce_agora/views/home/tabs/favourite/favorite_tab.dart';
+import 'package:ecommerce_agora/views/home/tabs/profile/user_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 

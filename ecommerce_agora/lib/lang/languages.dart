@@ -45,7 +45,8 @@ class Languages extends Translations {
           'light': 'Light',
           'dark': 'Dark',
           'system': 'System',
-          'select_lang': 'Select language'
+          'select_lang': 'Select language',
+          'continue': 'Continue',
         },
         'vi_VN': {
           'welcome': 'Chào mừng bạn đến với Agora',
@@ -88,7 +89,8 @@ class Languages extends Translations {
           'light': 'Sáng',
           'dark': 'Tối',
           'system': 'Hệ thống',
-          'select_lang': 'Chọn ngôn ngứ'
+          'select_lang': 'Chọn ngôn ngứ',
+          'continue': 'Tiếp tục',
         }
       };
 }
